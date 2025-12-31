@@ -52,7 +52,7 @@
     "less": "latest",
     "lightningcss": "latest",
     "lucide-react": "^0.454.0",
-    "next": "^15.5.4",
+    "next": "15.5.9",
     "next-themes": "^0.4.4",
     "ogl": "latest",
     "react": "^19.1.1",
