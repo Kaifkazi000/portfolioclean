@@ -15,7 +15,7 @@ export default function Certifications() {
       <div className={`grid grid-cols-4 md:grid-cols-4 gap-6 am:gap-6 md-gap-8 1g: gap-1 md:gap-10 lg:gap-12 max-w-4xl mx-auto place-items-center`}>
         <CertificationIcon
         name="navodita"
-        link="https://www.linkedin.com/posts/kaifkazi000_fullstackdevelopment-internshipexperience-activity-7267780087024885761-UPiK?utm_source=share&utm_medium=member_android&rcm=ACoAAD9O4U8BbfJY_yIADNPg6XgQhgFfRVwWr3E"
+        link="navodita.pdf"
         imageSrc="navodita.webp"/>
 
         <CertificationIcon
