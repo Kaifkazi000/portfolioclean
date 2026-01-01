@@ -34,7 +34,9 @@ export default function Certifications() {
         <CertificationIcon name="apna collage" 
           link = "apnacollage.pdf"
           imageSrc="apnacollage.png" ></CertificationIcon>
-          
+         <CertificationIcon name="Deloitte" 
+          link = "delloite.pdf"
+          imageSrc="dellloitee.webp" ></CertificationIcon> 
       </div>
     </section>
   );
