@@ -32,7 +32,7 @@ export default function Certifications() {
           link = "https://learn.microsoft.com/en-us/users/kaifkazi-9562/achievements"
           imageSrc="images5.png" ></CertificationIcon>
         <CertificationIcon name="apna collage" 
-          link = "https://learn.microsoft.com/en-us/users/kaifkazi-9562/achievements"
+          link = "apnacollage.pdf"
           imageSrc="apnacollage.png" ></CertificationIcon>
           
       </div>
