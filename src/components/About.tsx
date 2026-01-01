@@ -30,16 +30,17 @@ const techStack = {
 
 export default function About() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true })
 
-  const [selectedCategory, setSelectedCategory] = useState<keyof typeof techStack>("All")
+  const [selectedCategory, setSelectedCategory] =
+    useState<keyof typeof techStack>("All")
   const [openMobile, setOpenMobile] = useState<null | "edu" | "focus">(null)
 
   return (
     <section id="about" className="min-h-screen px-4 py-20">
       <div className="max-w-6xl mx-auto">
 
-        {/* Heading */}
+        {/* ================= HEADING ================= */}
         <motion.h2
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
@@ -50,19 +51,20 @@ export default function About() {
           About Me
         </motion.h2>
 
-        {/* Short About */}
-        <p className="text-center text-white/90 max-w-3xl mx-auto text-base md:text-lg leading-relaxed mb-16">
-          I’m a Computer Engineering student and software developer who learns by building real-world
-          applications. Currently working at AssureMe, I collaborate on backend APIs, AWS services,
-          database handling, and deployment workflows while growing in DevOps and system design.
+        <p className="text-center text-white/90 max-w-3xl mx-auto text-base md:text-lg leading-relaxed mb-20">
+          I’m a Computer Engineering student and software developer who learns by
+          building real-world applications. Currently working at AssureMe, I
+          collaborate on backend APIs, AWS services, database handling, and
+          deployment workflows while growing in DevOps and system design.
         </p>
 
         {/* ================= DESKTOP VIEW ================= */}
         <div className="hidden md:block">
 
-          <div className="grid grid-cols-2 gap-24 mb-20">
+          {/* Work + Focus */}
+          <div className="grid grid-cols-2 gap-24 mb-24">
 
-            {/* What I Work On */}
+            {/* Work */}
             <div className="relative pl-6">
               <div className="absolute left-0 top-2 h-full w-[2px] bg-white/30" />
               <h3 className="text-3xl font-bold text-white mb-6">
@@ -93,31 +95,48 @@ export default function About() {
             </div>
           </div>
 
-          {/* Education */}
-          <div className="flex justify-center mb-24">
-            <div className="relative pl-6 text-center max-w-xl">
-              <div className="absolute left-0 top-2 h-full w-[2px] bg-white/30" />
-              <h3 className="text-3xl font-bold text-white mb-6">Education</h3>
+          {/* ================= EDUCATION (DESKTOP) ================= */}
+          <div className="flex justify-center mb-28">
+            <div className="relative pl-8 max-w-xl text-left">
+              <div className="absolute left-0 top-0 h-full w-[2px] bg-white/30" />
 
-              <p className="text-white/90 text-lg mb-4">
-                <strong>Diploma (Polytechnic)</strong><br />
-                Government Polytechnic, Arvi<br />
-                Percentage: <strong>83.20%</strong>
-              </p>
+              <h3 className="text-3xl font-bold text-white mb-10 text-center">
+                Education
+              </h3>
 
-              <p className="text-white/90 text-lg">
-                <strong>B.Tech (Computer Engineering)</strong><br />
-                Government College of Engineering, Chandrapur<br />
-                Currently in <strong>6th Semester</strong>
-              </p>
+              {/* Diploma */}
+              <div className="mb-10">
+                <p className="text-white font-semibold text-lg">
+                  Diploma (Polytechnic)
+                </p>
+                <p className="text-white/90 text-lg">
+                  Government Polytechnic, Arvi
+                </p>
+                <p className="text-white/80 text-sm mt-1">
+                  Percentage: <span className="font-semibold">83.20%</span>
+                </p>
+              </div>
+
+              {/* B.Tech */}
+              <div>
+                <p className="text-white font-semibold text-lg">
+                  B.Tech (Computer Engineering)
+                </p>
+                <p className="text-white/90 text-lg">
+                  Government College of Engineering, Chandrapur
+                </p>
+                <p className="text-white/80 text-sm mt-1">
+                  Currently in <span className="font-semibold">6th Semester</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* ================= MOBILE VIEW ================= */}
-        <div className="md:hidden space-y-10 mb-20">
+        <div className="md:hidden space-y-10 mb-24">
 
-          {/* Work On */}
+          {/* Work (always visible) */}
           <div className="relative pl-5">
             <div className="absolute left-0 top-2 h-full w-[2px] bg-white/30" />
             <h3 className="text-2xl font-bold text-white mb-4">
@@ -131,59 +150,77 @@ export default function About() {
             </ul>
           </div>
 
-          {/* Education Toggle */}
-          <button
-            onClick={() => setOpenMobile(openMobile === "edu" ? null : "edu")}
-            className="w-full flex justify-between items-center text-white font-semibold text-lg"
+          {/* Education (auto open on touch / hover) */}
+          <div
+            onTouchStart={() => setOpenMobile("edu")}
+            onMouseEnter={() => setOpenMobile("edu")}
+            className="border border-white/20 rounded-xl p-4"
           >
-            Education
-            <ChevronDown className={`transition ${openMobile === "edu" ? "rotate-180" : ""}`} />
-          </button>
+            <div className="flex justify-between items-center text-white font-semibold">
+              Education
+              <ChevronDown
+                className={`transition ${
+                  openMobile === "edu" ? "rotate-180" : ""
+                }`}
+              />
+            </div>
 
-          <AnimatePresence>
-            {openMobile === "edu" && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="relative pl-5 text-white/90"
-              >
-                <div className="absolute left-0 top-2 h-full w-[2px] bg-white/30" />
-                <p>
-                  <strong>Diploma</strong> — Govt. Polytechnic, Arvi (83.20%)<br />
-                  <strong>B.Tech</strong> — GCOE Chandrapur (6th Sem)
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <AnimatePresence>
+              {openMobile === "edu" && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative pl-5 mt-4 text-white/90"
+                >
+                  <div className="absolute left-0 top-2 h-full w-[2px] bg-white/30" />
+                  <p>
+                    <strong>Diploma</strong> — Govt. Polytechnic, Arvi (83.20%)
+                  </p>
+                  <p className="mt-2">
+                    <strong>B.Tech</strong> — GCOE Chandrapur (6th Sem)
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-          {/* Focus Toggle */}
-          <button
-            onClick={() => setOpenMobile(openMobile === "focus" ? null : "focus")}
-            className="w-full flex justify-between items-center text-white font-semibold text-lg"
+          {/* Focus (auto open on touch / hover) */}
+          <div
+            onTouchStart={() => setOpenMobile("focus")}
+            onMouseEnter={() => setOpenMobile("focus")}
+            className="border border-white/20 rounded-xl p-4"
           >
-            What I’m Focusing On
-            <ChevronDown className={`transition ${openMobile === "focus" ? "rotate-180" : ""}`} />
-          </button>
+            <div className="flex justify-between items-center text-white font-semibold">
+              What I’m Focusing On
+              <ChevronDown
+                className={`transition ${
+                  openMobile === "focus" ? "rotate-180" : ""
+                }`}
+              />
+            </div>
 
-          <AnimatePresence>
-            {openMobile === "focus" && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="relative pl-5 text-white/90"
-              >
-                <div className="absolute left-0 top-2 h-full w-[2px] bg-white/30" />
-                <ul className="space-y-2">
-                  <li>• DevOps & CI/CD</li>
-                  <li>• AWS EC2</li>
-                  <li>• Backend design</li>
-                  <li>• DSA practice</li>
-                </ul>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <AnimatePresence>
+              {openMobile === "focus" && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative pl-5 mt-4 text-white/90"
+                >
+                  <div className="absolute left-0 top-2 h-full w-[2px] bg-white/30" />
+                  <ul className="space-y-2">
+                    <li>• DevOps & CI/CD</li>
+                    <li>• AWS EC2</li>
+                    <li>• Backend design</li>
+                    <li>• DSA practice</li>
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* ================= TECH STACK ================= */}
@@ -191,7 +228,7 @@ export default function About() {
           Tech Stack
         </h3>
 
-        {/* Category Buttons (NO SCROLLBAR) */}
+        {/* Categories (NO SCROLLBAR) */}
         <div className="flex flex-wrap gap-3 justify-center mb-10">
           {Object.keys(techStack).map((cat) => (
             <button
@@ -208,7 +245,7 @@ export default function About() {
           ))}
         </div>
 
-        {/* Tech Pills */}
+        {/* Pills */}
         <div className="flex flex-wrap gap-3 justify-center">
           {techStack[selectedCategory].map((tech) => (
             <span
@@ -219,6 +256,7 @@ export default function About() {
             </span>
           ))}
         </div>
+
       </div>
     </section>
   )
