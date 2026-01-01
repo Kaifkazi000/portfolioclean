@@ -13,8 +13,8 @@ const projects = [
     description: "A modern, responsive portfolio website built with React, TypeScript, and Vanta.js for dynamic wave animations. Features smooth scrolling, dark/light theme toggle, contact form integration, and GitHub contribution calendar. Showcases skills, projects, and certifications with a professional, interactive design.",
     image: "portfolio.png",
     tech: ["React", "TypeScript", "Vanta.js", "Framer Motion", "Tailwind CSS", "Next.js"],
-    liveUrl: "https://kaifkazi000.github.io/kaziportfolio/",
-    githubUrl: "https://github.com/Kaifkazi000/kaziportfolio",
+    liveUrl: "https://portfolioclean-eight.vercel.app/",
+    githubUrl: "https://github.com/Kaifkazi000/portfolioclean",
   },
   {
     id: 2,
