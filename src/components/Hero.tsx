@@ -34,7 +34,7 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              Kaifoddin
+              Kaif
             </motion.span>
           </motion.h1>
 
@@ -44,8 +44,8 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <span className="font-semibold text-white">Blending AI and Full-Stack to Create Intelligent, Scalable Web Apps</span>{" "}
-            <span className="font-semibold text-white">Turning data and code into real-world impact.</span>
+            <span className="font-semibold text-white">Learning full-stack development while exploring DevOps practices,</span>{" "}
+            <span className="font-semibold text-white"> Creating scalable web apps through hands-on projects.</span>
           </motion.p>
 
           <motion.div
@@ -65,7 +65,7 @@ export default function Hero() {
             </motion.button>
 
             <motion.a
-              href="/KAIF 1ST resume.pdf"
+              href="/kaif resume2.pdf"
               download
               className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 font-semibold rounded-full transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm text-sm sm:text-base border-white/30 text-white hover:bg-white/10"
               whileHover={{ scale: 1.05 }}

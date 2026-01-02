@@ -26,7 +26,7 @@ export default function GitHubActivity() {
   const { theme } = useTheme()
   const dark = theme === "dark"
 
-  const [selectedYear, setSelectedYear] = useState<number>(2025) // Default to 2025
+  const [selectedYear, setSelectedYear] = useState<number>(2026) // Default to 2026
   const [data, setData] = useState<GitHubData | null>(null)
   const [loading, setLoading] = useState(true)
   const [live, setLive] = useState(false)
