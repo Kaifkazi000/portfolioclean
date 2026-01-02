@@ -2,7 +2,10 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: "B's Portfolio"
+  title: "Kaif's Portfolio",
+  icons: {
+    icon: '/logo.png',
+  },
 }
 
 export default function RootLayout({

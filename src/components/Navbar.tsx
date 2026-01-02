@@ -18,6 +18,7 @@ const navItems = [
   { name: "Home", href: "#hero" },
   { name: "About", href: "#about" },
   { name: "Projects", href: "#projects" },
+  { name: "Certifications", href: "#certifications" },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -109,6 +110,13 @@ export default function Navbar({ setIsSideMenuOpen }: NavbarProps) {
               aria-label="Scroll to Projects"
             >
               <h6 className="text-sm sm:text-xl font-semibold text-white">Projects</h6>
+            </button>
+            <button
+              onClick={() => scrollToSection("#certifications")}
+              className="p-2 sm:p-3 bg-white/10 hover:bg-black/20 rounded-full"
+              aria-label="Scroll to Certifications"
+            >
+              <h6 className="text-sm sm:text-xl font-semibold text-white">Certifications</h6>
             </button>
             <button
               onClick={() => scrollToSection("#contact")}

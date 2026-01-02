@@ -39,8 +39,10 @@ export default function DarkVeil({
   const ref = useRef(null)
 
   useEffect(() => {
-    const canvas = ref.current
-    const parent = canvas.parentElement
+    const canvas = ref.current as HTMLCanvasElement | null
+    if (!canvas) return
+    const parent = canvas.parentElement as HTMLElement | null
+    if (!parent) return
     const renderer = new Renderer({
       dpr: Math.min(window.devicePixelRatio, 2),
       canvas,
