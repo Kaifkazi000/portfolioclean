@@ -36,12 +36,27 @@ const projects = [
   },
   {
     id: 4,
-    title: "Open Source Contributions",
-    description: "Active contributor to various open source projects including data analysis tools, web development frameworks, and community-driven initiatives. Providing bug fixes, feature enhancements, and code improvements while collaborating with developers worldwide to build better software and learn from the community.",
-    image: "contributions",
-    tech: ["Git", "GitHub", "Open Source", "Collaboration", "Code Review", "Community"],
-    liveUrl: "https://github.com/Kaifkazi000",
-    githubUrl: "https://github.com/Kaifkazi000",
+    title: "CodeLab- virtual lab",
+    description: " A structured programming lab system designed for real academic practicals. Where coding practicals are done properly, not casually. Read  READ.ME file",
+
+                 
+    image: "/codelab.png",
+    tech: [
+  "Next.js",
+  "React",
+  "JavaScript",
+  "Node.js",
+  "Express.js",
+  "PostgreSQL",
+  "Supabase",
+  "REST APIs",
+  "JWT Authentication",
+  "Git",
+  "GitHub",
+  "Postman"
+],
+    liveUrl: "https://github.com/Kaifkazi000/virtaul-coding-labs",
+    githubUrl: "https://github.com/Kaifkazi000/virtaul-coding-labs",
   },
   {
     id: 5,
