@@ -39,22 +39,22 @@ const projects = [
     title: "CodeLab- virtual lab",
     description: " A structured programming lab system designed for real academic practicals. Where coding practicals are done properly, not casually. Read  READ.ME file",
 
-                 
-    image: "/codelab.png",
+
+    image: "/newcodelab.png",
     tech: [
-  "Next.js",
-  "React",
-  "JavaScript",
-  "Node.js",
-  "Express.js",
-  "PostgreSQL",
-  "Supabase",
-  "REST APIs",
-  "JWT Authentication",
-  "Git",
-  "GitHub",
-  "Postman"
-],
+      "Next.js",
+      "React",
+      "JavaScript",
+      "Node.js",
+      "Express.js",
+      "PostgreSQL",
+      "Supabase",
+      "REST APIs",
+      "JWT Authentication",
+      "Git",
+      "GitHub",
+      "Postman"
+    ],
     liveUrl: "https://github.com/Kaifkazi000/virtaul-coding-labs",
     githubUrl: "https://github.com/Kaifkazi000/virtaul-coding-labs",
   },

@@ -58,21 +58,21 @@ export default function GitHubActivity() {
     try {
       const url = `/api/github-contributions?year=${year}`
       console.log(`[GitHubActivity] Fetching from: ${url}`)
-      
+
       const response = await fetch(url)
-      
+
       console.log(`[GitHubActivity] Response status:`, response.status, response.statusText)
-      
+
       // Parse response even if status is not ok to get error message
       const result: GitHubContributionsResponse = await response.json()
-      
+
       console.log(`[GitHubActivity] API Response:`, {
         success: result.success,
         totalContributions: result.data?.totalContributions,
         contributionDaysCount: result.data?.contributionDays?.length,
         error: result.error
       })
-      
+
       if (!response.ok) {
         // Use the error message from API response if available
         const errorMsg = result.error || `HTTP error! status: ${response.status}`
@@ -86,7 +86,7 @@ export default function GitHubActivity() {
 
       // Transform API response to component format (pass year to fill missing days)
       const transformed = transformContributionsData(result, year)
-      
+
       if (!transformed) {
         console.error("[GitHubActivity] Transformation failed")
         return null
@@ -98,11 +98,11 @@ export default function GitHubActivity() {
         const dayYear = new Date(c.date).getFullYear()
         return dayYear !== year && c.count > 0
       })
-      
+
       if (wrongYearDays.length > 0) {
         console.error(`[GitHubActivity] ERROR: Found ${wrongYearDays.length} days from wrong year:`, wrongYearDays.map(c => c.date))
       }
-      
+
       console.log(`[GitHubActivity] Year ${year} - Total contributions:`, transformed.totalContributions)
       console.log(`[GitHubActivity] Year ${year} - Total days in array:`, transformed.contributions.length)
       console.log(`[GitHubActivity] Year ${year} - Days with contributions:`, daysWithContributions.length)
@@ -110,9 +110,9 @@ export default function GitHubActivity() {
 
       // Calculate total from actual contributions (more reliable than API's totalContributions)
       const actualTotal = transformed.contributions.reduce((sum, day) => sum + day.count, 0)
-      
+
       console.log(`[GitHubActivity] Calculated total from contributions: ${actualTotal} (API said: ${transformed.totalContributions})`)
-      
+
       // Convert to component's expected format
       return {
         total: { [year]: actualTotal }, // Use calculated total instead of API total
@@ -141,7 +141,7 @@ export default function GitHubActivity() {
           const cacheAge = Date.now() - ts
           const cachedTotal = d.total[selectedYear] || 0
           console.log(`[GitHubActivity] Found cache for year ${selectedYear}, age: ${Math.round(cacheAge / 1000)}s, Total: ${cachedTotal}`)
-          
+
           // Use cache only if it's very fresh (less than 5 minutes)
           // This ensures new contributions show up quickly
           if (cacheAge < CACHE_TTL) {
@@ -149,7 +149,7 @@ export default function GitHubActivity() {
             setData(d)
             setLive(cachedLive)
             setLoading(false)
-            
+
             // Fetch fresh data in background to update cache
             fetchContributions(selectedYear).then((fresh) => {
               if (fresh) {
@@ -181,7 +181,7 @@ export default function GitHubActivity() {
 
       // Fetch from API
       const fresh = await fetchContributions(selectedYear)
-      
+
       if (fresh) {
         setData(fresh)
         setLive(true)
@@ -200,12 +200,12 @@ export default function GitHubActivity() {
     }
 
     load()
-    
+
     // Auto-refresh every 5 minutes to catch new contributions
     const refreshInterval = setInterval(() => {
       console.log(`[GitHubActivity] Auto-refreshing contributions for year ${selectedYear}`)
       const refreshCacheKey = `github_contributions_${selectedYear}`
-      
+
       fetchContributions(selectedYear).then((fresh) => {
         if (fresh) {
           const newTotal = fresh.total[selectedYear] || 0
@@ -227,24 +227,24 @@ export default function GitHubActivity() {
         // Silent fail for auto-refresh
       })
     }, 5 * 60 * 1000) // Every 5 minutes
-    
+
     return () => clearInterval(refreshInterval)
   }, [selectedYear]) // Reload when year changes
 
   /* ---------- render ---------- */
   const display = data ?? buildEmptyYearRange(selectedYear)
   const total = display.total[selectedYear] || 0
-  
+
   // CRITICAL: First, check what we have in display.contributions
   const wrongYearInDisplay = display.contributions.filter((c) => {
     const dayYear = new Date(c.date).getFullYear()
     return dayYear !== selectedYear && c.count > 0
   })
-  
+
   if (wrongYearInDisplay.length > 0) {
     console.warn(`[GitHubActivity] Found ${wrongYearInDisplay.length} wrong-year contributions in display data:`, wrongYearInDisplay.map(c => `${c.date} (year ${new Date(c.date).getFullYear()})`))
   }
-  
+
   // CRITICAL: Filter contributions to STRICTLY ONLY include the selected year
   // This ensures ActivityCalendar doesn't infer wrong year from data
   let filteredContributions = display.contributions.filter((c) => {
@@ -255,14 +255,14 @@ export default function GitHubActivity() {
     }
     return matches
   })
-  
+
   // If filteredContributions is empty or incomplete, generate all days of the year
   // ActivityCalendar requires non-empty data with all days
   const expectedDays = new Date(selectedYear, 2, 0).getDate() === 29 ? 366 : 365
-  
+
   // Always regenerate to ensure we have exactly the right year and all days
   console.log(`[GitHubActivity] Regenerating year ${selectedYear} data (had ${filteredContributions.length}, need ${expectedDays} days)`)
-  
+
   // Create a map of existing contributions for the selected year ONLY
   const contributionMap = new Map<string, number>()
   filteredContributions.forEach((c) => {
@@ -271,7 +271,7 @@ export default function GitHubActivity() {
       contributionMap.set(c.date, c.count)
     }
   })
-  
+
   // Generate all days of the selected year ONLY - use UTC date strings to avoid timezone issues
   const allDays: typeof filteredContributions = []
   for (let month = 0; month < 12; month++) {
@@ -293,15 +293,15 @@ export default function GitHubActivity() {
       })
     }
   }
-  
+
   filteredContributions = allDays
-  
+
   // Final verification: ensure NO wrong year data
   const wrongYearContributions = filteredContributions.filter((c) => {
     const dayYear = new Date(c.date).getFullYear()
     return dayYear !== selectedYear
   })
-  
+
   if (wrongYearContributions.length > 0) {
     console.error(`[GitHubActivity] CRITICAL ERROR: Still found ${wrongYearContributions.length} contributions from wrong year after regeneration!`, wrongYearContributions.map(c => `${c.date} (year ${new Date(c.date).getFullYear()})`))
     // Remove them completely - this should never happen if regeneration worked
@@ -310,12 +310,12 @@ export default function GitHubActivity() {
       return dayYear === selectedYear
     })
   }
-  
+
   // Verify we have the right number of days
   if (filteredContributions.length !== expectedDays) {
     console.warn(`[GitHubActivity] Expected ${expectedDays} days but got ${filteredContributions.length} for year ${selectedYear}`)
   }
-  
+
   // Debug logging for display
   if (data) {
     console.log(`[GitHubActivity] Display - Year: ${selectedYear}, Total: ${total}`)
@@ -341,7 +341,7 @@ export default function GitHubActivity() {
             >
               {total > 0 ? `${total} contributions in ${YEAR}` : `${YEAR} Contribution Calendar`}
             </h2>
-            
+
             {/* Year Selector */}
             <div className="flex items-center gap-3">
               <button
@@ -349,15 +349,14 @@ export default function GitHubActivity() {
                   console.log(`[GitHubActivity] Switching to year 2025`)
                   setSelectedYear(2025)
                 }}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  selectedYear === 2025
-                    ? dark
-                      ? "bg-white/20 text-white border-2 border-white/40"
-                      : "bg-white/30 text-white border-2 border-white/50"
-                    : dark
-                      ? "bg-white/5 text-white/70 hover:bg-white/10 border border-white/20"
-                      : "bg-white/10 text-white/70 hover:bg-white/20 border border-white/30"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedYear === 2025
+                  ? dark
+                    ? "bg-white/20 text-white border-2 border-white/40"
+                    : "bg-white/30 text-white border-2 border-white/50"
+                  : dark
+                    ? "bg-white/5 text-white/70 hover:bg-white/10 border border-white/20"
+                    : "bg-white/10 text-white/70 hover:bg-white/20 border border-white/30"
+                  }`}
               >
                 2025
               </button>
@@ -366,15 +365,14 @@ export default function GitHubActivity() {
                   console.log(`[GitHubActivity] Switching to year 2026`)
                   setSelectedYear(2026)
                 }}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  selectedYear === 2026
-                    ? dark
-                      ? "bg-white/20 text-white border-2 border-white/40"
-                      : "bg-white/30 text-white border-2 border-white/50"
-                    : dark
-                      ? "bg-white/5 text-white/70 hover:bg-white/10 border border-white/20"
-                      : "bg-white/10 text-white/70 hover:bg-white/20 border border-white/30"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedYear === 2026
+                  ? dark
+                    ? "bg-white/20 text-white border-2 border-white/40"
+                    : "bg-white/30 text-white border-2 border-white/50"
+                  : dark
+                    ? "bg-white/5 text-white/70 hover:bg-white/10 border border-white/20"
+                    : "bg-white/10 text-white/70 hover:bg-white/20 border border-white/30"
+                  }`}
               >
                 2026
               </button>
@@ -382,38 +380,36 @@ export default function GitHubActivity() {
           </div>
 
           <motion.div
-            className={`rounded-2xl p-4 sm:p-8 mb-8 backdrop-blur-sm border transition-all duration-300 ${
-              dark ? "bg-white/10 border-white/20" : "bg-white/5 border-white/10"
-            }`}
+            className={`rounded-2xl p-4 sm:p-8 mb-8 backdrop-blur-sm border transition-all duration-300 ${dark ? "bg-white/10 border-white/20" : "bg-white/5 border-white/10"
+              }`}
             whileHover={{ y: -5 }}
           >
             <div className="flex justify-center items-center gap-3 mb-4">
               <div
-                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${
-                  live
-                    ? dark
-                      ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                      : "bg-emerald-50 text-emerald-600 border border-emerald-200"
-                    : dark
-                      ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                      : "bg-emerald-50 text-emerald-600 border border-emerald-200"
-                }`}
+                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${live
+                  ? dark
+                    ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                    : "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                  : dark
+                    ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                    : "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                  }`}
               >
                 {live ? <FiWifi className="w-3 h-3" /> : <FiWifiOff className="w-3 h-3" />}
                 {live ? "Live GitHub Data" : "Demo Data"}
               </div>
-              
+
               {/* Refresh Button */}
               <button
                 onClick={async () => {
                   console.log(`[GitHubActivity] Manual refresh triggered for year ${selectedYear}`)
                   setLoading(true)
                   setError(null)
-                  
+
                   // Clear cache for this year
                   const cacheKey = `github_contributions_${selectedYear}`
                   localStorage.removeItem(cacheKey)
-                  
+
                   // Fetch fresh data
                   const fresh = await fetchContributions(selectedYear)
                   if (fresh) {
@@ -430,15 +426,13 @@ export default function GitHubActivity() {
                   setLoading(false)
                 }}
                 disabled={loading}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                  loading
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:scale-105"
-                } ${
-                  dark
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${loading
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:scale-105"
+                  } ${dark
                     ? "bg-white/10 hover:bg-white/20 text-white border border-white/20"
                     : "bg-white/20 hover:bg-white/30 text-white border border-white/30"
-                }`}
+                  }`}
                 title="Refresh contributions (auto-updates every 5 min)"
               >
                 {loading ? "⋯" : "↻"} Refresh
@@ -592,12 +586,6 @@ function MobileCalendarCarousel({
     generateQuarter(8, 11),  // Sep-Dec (months 8-11)
   ]
 
-  // Debug logging
-  console.log(`[MobileCarousel] Year ${year} - Quarter 1 (Jan-Apr):`, quarters[0].length, 'days')
-  console.log(`[MobileCarousel] Year ${year} - Quarter 2 (May-Aug):`, quarters[1].length, 'days')
-  console.log(`[MobileCarousel] Year ${year} - Quarter 3 (Sep-Dec):`, quarters[2].length, 'days')
-  console.log(`[MobileCarousel] Year ${year} - Total contributions passed:`, contributions.length, 'days')
-
   // Auto-scroll every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -635,10 +623,6 @@ function MobileCalendarCarousel({
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {quarters.map((quarterContributions, index) => {
-            // Debug each quarter
-            console.log(`[MobileCarousel] Rendering quarter ${index + 1} (${quarterLabels[index]}):`, quarterContributions.length, 'days')
-            console.log(`[MobileCarousel] Sample dates for quarter ${index + 1}:`, quarterContributions.slice(0, 3).map(c => c.date))
-            
             return (
               <div
                 key={index}

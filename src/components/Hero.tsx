@@ -8,7 +8,7 @@ export default function Hero() {
   const scrollToProjects = useCallback(() => {
     const element = document.querySelector("#projects")
     if (!element) return
-    
+
     const lenis = (window as any).lenis
     if (lenis) {
       lenis.scrollTo(element, { duration: 1.2 })
@@ -65,7 +65,7 @@ export default function Hero() {
             </motion.button>
 
             <motion.a
-              href="/kaif resume2.pdf"
+              href="/kaziportfoliooo.pdf"
               download
               className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 font-semibold rounded-full transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm text-sm sm:text-base border-white/30 text-white hover:bg-white/10"
               whileHover={{ scale: 1.05 }}
