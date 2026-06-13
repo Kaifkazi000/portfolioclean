@@ -55,7 +55,7 @@ const projects = [
       "GitHub",
       "Postman"
     ],
-    liveUrl: "https://github.com/Kaifkazi000/virtaul-coding-labs",
+    liveUrl: "https://virtaul-coding-labs.vercel.app/",
     githubUrl: "https://github.com/Kaifkazi000/virtaul-coding-labs",
   },
   {
